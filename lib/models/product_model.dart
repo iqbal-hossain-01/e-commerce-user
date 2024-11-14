@@ -19,7 +19,7 @@ class ProductModel {
   final List<String> colors;
   final List<String> sizes;
   final List<String> additionalImages;
-  double avgRating;
+  final double avgRating;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -73,7 +73,7 @@ class ProductModel {
       productName: map['name'] ?? '',
       categoryModel: CategoryModel.fromMap(map['categoryModel']),
       description: map['description'] ?? '',
-      price: map['price'] ?? 0.0,
+      price: (map['price'] is int) ? (map['price'] as int).toDouble() : map['price'] as double,
       stock: map['stock'] ?? 0,
       discount: map['discount'] ?? 0,
       sku: map['sku'] ?? '',
@@ -83,7 +83,7 @@ class ProductModel {
       colors: List<String>.from(map['colors'] ?? []),
       sizes: List<String>.from(map['sizes'] ?? []),
       additionalImages: List<String>.from(map['additionalImages'] ?? []),
-      avgRating: map['avgRating'] ?? 0.0,
+      avgRating: (map['avgRating'] is int) ? (map['avgRating'] as int).toDouble() : map['avgRating'] as double,
       createdAt: map['createdAt'] != null ? DateTime.parse(map['createdAt']) : null,
       updatedAt: map['updatedAt'] != null ? DateTime.parse(map['updatedAt']) : null,
     );

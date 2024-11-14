@@ -33,4 +33,26 @@ class _LauncherScreenState extends ConsumerState<LauncherScreen> {
     return const LoadingIndicator();
   }
 }
+/*
+class LauncherScreen extends ConsumerWidget {
+  static const String routeName = '/';
 
+  const LauncherScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(firebaseAuthProvider);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (authState != null) {
+        context.pushReplacementNamed(ProductListScreen.routeName);
+      } else {
+        context.pushReplacementNamed(LoginScreen.routeName);
+      }
+    });
+
+    return const LoadingIndicator();
+  }
+}
+
+ */

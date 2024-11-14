@@ -1,5 +1,6 @@
 
 import 'package:e_commerce_user_app/providers/auth_provider.dart';
+import 'package:e_commerce_user_app/screens/products/product_list_screen.dart';
 import 'package:e_commerce_user_app/utils/constants.dart';
 import 'package:e_commerce_user_app/utils/helper_functions.dart';
 import 'package:e_commerce_user_app/widgets/custom_button.dart';
@@ -73,7 +74,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         return null;
                       }),
                   const SizedBox(height: 24),
-                  CustomButton(text: 'Log in', onPressed: _loginAdmin),
+                  CustomButton(text: 'Log in', onPressed: () {
+                    _authentication(true);
+                  }),
+                  CustomButton(text: 'Register', onPressed: () {
+                    _authentication(false);
+                  }),
                   const SizedBox(
                     height: 16,
                   ),
@@ -91,7 +97,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 
-  Future<void> _loginAdmin() async {
+  Future<void> _authentication(bool isLogin) async {
     if (_formKey.currentState!.validate()) {
       final email = _emailController.text;
       final password = _passwordController.text;
@@ -101,9 +107,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       );
       configLoading();
       try {
-
+        if (isLogin) {
+          await ref.read(firebaseAuthProvider.notifier).loginUser(email, password);
+        } else {
+          await ref.read(firebaseAuthProvider.notifier).registerUser(email, password);
+        }
+        EasyLoading.dismiss();
+        context.pushReplacementNamed(ProductListScreen.routeName);
       } catch (err) {
-        //
+        EasyLoading.dismiss();
+        EasyLoading.showError(err.toString());
       } finally {
         EasyLoading.dismiss();
       }
