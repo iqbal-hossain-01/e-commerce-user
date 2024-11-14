@@ -1,5 +1,4 @@
 class CartModel {
-  String cartItemId;
   String productId;
   String productName;
   String image;
@@ -9,7 +8,6 @@ class CartModel {
   bool isSelected;
 
   CartModel({
-    required this.cartItemId,
     required this.productId,
     required this.productName,
     required this.image,
@@ -23,7 +21,6 @@ class CartModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'cartItemId': cartItemId,
       'productId': productId,
       'productName': productName,
       'image': image,
@@ -36,7 +33,6 @@ class CartModel {
 
   factory CartModel.fromMap(Map<String, dynamic> map) {
     return CartModel(
-      cartItemId: map['cartItemId'],
       productId: map['productId'],
       productName: map['productName'],
       image: map['image'],

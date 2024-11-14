@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         brightness: Brightness.light,
       ),
+
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.system,
       routerConfig: AppRouter.router,

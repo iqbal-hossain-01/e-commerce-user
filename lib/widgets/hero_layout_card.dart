@@ -1,10 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce_user_app/models/product_model.dart';
+import 'package:e_commerce_user_app/providers/auth_provider.dart';
+import 'package:e_commerce_user_app/providers/cart_provider.dart';
 import 'package:e_commerce_user_app/utils/constants.dart';
 import 'package:e_commerce_user_app/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 
-class GirdViewItem extends StatelessWidget {
+class GirdViewItem extends ConsumerWidget {
   const GirdViewItem({
     super.key,
     required this.product,
@@ -13,8 +17,9 @@ class GirdViewItem extends StatelessWidget {
   final ProductModel product;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     //final double width = MediaQuery.sizeOf(context).width;
+    final isInCart = ref.read(cartProvider.notifier).isProductInCart(product.id!);
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -51,16 +56,28 @@ class GirdViewItem extends StatelessWidget {
                   decoration: TextDecoration.lineThrough,
                 ),
               ),
-
             ),
           Text(
             'Price: $currency${product.priceAfterDiscount}',
             overflow: TextOverflow.clip,
             softWrap: false,
           ),
-
-          ElevatedButton(onPressed: () {}, child: const Text('Buy'),),
-          ElevatedButton(onPressed: () {}, child: Text('Add to Cart'),),
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text('Buy'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (isInCart) {
+                ref.read(cartProvider.notifier).removeFromCart(product.id!,
+                    ref.read(firebaseAuthProvider.notifier).currentUser!.uid);
+              } else {
+                ref.read(cartProvider.notifier).addProductToCart(product,
+                    ref.read(firebaseAuthProvider.notifier).currentUser!.uid);
+              }
+            },
+            child: Text(isInCart ? 'REMOVE FROM CART' : 'ADD TO CART'),
+          ),
         ],
       ),
     );
